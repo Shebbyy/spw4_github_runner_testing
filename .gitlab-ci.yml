@@ -12,6 +12,7 @@ image: maven:3.9.7-eclipse-temurin-21
 variables:
   maven_packages_cache: ".m2/repository"
   MAVEN_OPTS: "-Dmaven.repo.local=./$maven_packages_cache"
+  sonar_project: "ConnectFour"
 
 build:
   stage: build
@@ -65,12 +66,6 @@ analyze:
   cache:
     paths:
       - $maven_packages_cache
-  artifacts:
-    name: $CI_JOB_NAME-$CI_COMMIT_REF_SLUG-CI_COMMIT_SHORT_SHA
-    expire_in: 1 week
-    paths:
-      - "target/*"
-      - "target/site/jacoco/*"
   script:
     - mvn sonar:sonar -Dsonar.projectKey=$sonar_project -Dsonar.qualitygate.wait=true
   allow_failure: true
