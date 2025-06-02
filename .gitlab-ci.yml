@@ -51,3 +51,26 @@ test:
       - "target/site/jacoco/*"
   script:
     - mvn test
+
+analyze:
+  stage: analyze
+  only:
+    refs:
+      - main
+  tags:
+    - docker
+  dependencies:
+    - build
+    - test
+  cache:
+    paths:
+      - $maven_packages_cache
+  artifacts:
+    name: $CI_JOB_NAME-$CI_COMMIT_REF_SLUG-CI_COMMIT_SHORT_SHA
+    expire_in: 1 week
+    paths:
+      - "target/*"
+      - "target/site/jacoco/*"
+  script:
+    - mvn sonar:sonar -Dsonar.projectKey=$sonar_project -Dsonar.qualitygate.wait=true
+  allow_failure: true
