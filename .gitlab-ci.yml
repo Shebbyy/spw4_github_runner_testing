@@ -1,5 +1,9 @@
 stages:
   - build
+  - test
+  - analyze
+  - package
+  - publish
 
 
 # Default Image can be overriden per project here
@@ -26,3 +30,24 @@ build:
         - "target/*"
   script:
     - mvn compile
+
+test:
+  stage: test
+  only:
+    refs:
+      - main
+  tags:
+    - docker
+  dependencies:
+    - build
+  cache:
+    paths:
+      - $maven_packages_cache
+  artifacts:
+    name: $CI_JOB_NAME-$CI_COMMIT_REF_SLUG-CI_COMMIT_SHORT_SHA
+    expire_in: 1 week
+    paths:
+      - "target/*"
+      - "target/site/jacoco/*"
+  script:
+    - mvn test
