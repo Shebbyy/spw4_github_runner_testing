@@ -1,9 +1,6 @@
 stages:
   - build
-  - test
-  - analyze
-  - package
-  - deploy
+
 
 # Default Image can be overriden per project here
 image: maven:3.9.7-eclipse-temurin-21
@@ -23,9 +20,9 @@ build:
     paths:
       - $maven_packages_cache
   artifacts:
-    - name: $CI_JOB_NAME-$CI_COMMIT_REF_SLUG-CI_COMMIT_SHORT_SHA
-    - expire_in: 1 week
-    - paths:
+    name: $CI_JOB_NAME-$CI_COMMIT_REF_SLUG-CI_COMMIT_SHORT_SHA
+    expire_in: 1 week
+    paths:
         - "target/*"
   script:
     - mvn compile
