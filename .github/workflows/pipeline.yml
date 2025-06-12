@@ -26,9 +26,10 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/cache@v4
         with:
-          name: build-cache-${{ github.run_id }}
-          path: target/*
+          path: target
+          key: build-cache-${{ github.run_id }}
+          restore-keys: build-cache-
       - name: Test with Maven
         run: mvn test
