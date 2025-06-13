@@ -7,7 +7,7 @@ on:
 
 env:
   maven_packages_cache: ".m2"
-  MAVEN_OPTS: "-Dmaven.repo.local=./$maven_packages_cache"
+  MAVEN_OPTS: "-Dmaven.repo.local=./.m2"
   sonar_project: "ConnectFour_Github"
 
 jobs:
