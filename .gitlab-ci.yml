@@ -1,3 +1,9 @@
+include:
+  - component: $CI_SERVER_FQDN/components/code-quality-oss/codequality-os-scanners-integration/pmd@1.1.1
+    inputs:
+      stage: analyze
+
+
 stages:
   - build
   - test
@@ -5,8 +11,6 @@ stages:
   - package
   - deploy
 
-
-# Default Image can be overriden per project here
 image: maven:3.9.7-eclipse-temurin-21
 
 variables:
@@ -25,10 +29,10 @@ build:
     paths:
       - $maven_packages_cache
   artifacts:
-    name: $CI_JOB_NAME-$CI_COMMIT_REF_SLUG-CI_COMMIT_SHORT_SHA
+    name: $CI_JOB_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
     expire_in: 1 week
     paths:
-        - "target/*"
+      - "target/*"
   script:
     - mvn compile
 
@@ -45,15 +49,15 @@ test:
     paths:
       - $maven_packages_cache
   artifacts:
-    name: $CI_JOB_NAME-$CI_COMMIT_REF_SLUG-CI_COMMIT_SHORT_SHA
+    name: $CI_JOB_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
     expire_in: 1 week
     paths:
-      - "target/*"
+      - "target/surefire-reports/*"
       - "target/site/jacoco/*"
   script:
     - mvn test
 
-analyze:
+sonar:
   stage: analyze
   only:
     refs:
@@ -83,7 +87,7 @@ package:
     paths:
       - $maven_packages_cache
   artifacts:
-    name: $CI_JOB_NAME-$CI_COMMIT_REF_SLUG-CI_COMMIT_SHORT_SHA
+    name: $CI_JOB_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
     expire_in: 1 week
     paths:
       - "target/*.war"
