@@ -90,4 +90,4 @@ jobs:
         with:
           name: package-artifact
       - name: Move to webapp folder
-        run: mv /home/github-runner/actions-runner/_work/spw4_github_runner_testing/spw4_github_runner_testing/ConnectFour.war /usr/local/tomcat/webapps/ConnectFour.war
+        run: mv /home/github-runner/actions-runner/_work/spw4_github_runner_testing/spw4_github_runner_testing/ConnectFour.war /usr/local/tomcat/webapps
